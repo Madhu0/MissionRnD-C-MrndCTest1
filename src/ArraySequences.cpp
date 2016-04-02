@@ -34,30 +34,40 @@ Difficulty : Medium
 int apseq(int *arr, int *res, int strt,int flag){
 	int ap1mean,i;
 	ap1mean = arr[strt+1] - arr[strt];
-	if (flag)
-		res[0] = strt;
-	else
-		res[2] = strt;
+	if (flag){
+		if (strt < res[0])
+			res[0] = strt;
+	}
+	else{
+		if (strt < res[2])
+			res[2] = strt;
+	}
 	i = strt;
 	while ((arr[i + 1] - arr[i]) == ap1mean){
 		i += 1;
 	}
-	if (flag)
-		res[1] = i;
-	else
-		res[3] = i;
+	if (flag){
+		if (i>res[1])
+			res[1] = i;
+	}
+	else{
+		if (i > res[3])
+			res[3] = i;
+	}
 	return i;
 }
 
 int gpseq(int *arr, int *res, int strt){
 	int gpmean, i;
 	gpmean = arr[strt + 1] / arr[strt];
-	res[4] = strt;
+	if (strt<res[4])
+		res[4] = strt;
 	i = strt;
 	while ((arr[i + 1] / arr[i])){
 		i += 1;
 	}
-	res[5] = i;
+	if (i>res[5])
+		res[5] = i;
 	return i;
 }
 
@@ -65,6 +75,12 @@ int * find_sequences(int *arr, int len){
 	//Return final array which has 6indexes [AP1_S,AP1_E,AP2_S,AP2_E,GP1_S,GP2_E]
 	int *res, i, j, next,flag=1;
 	res = (int *)malloc(sizeof(int)* 6);
+	res[0] = -1;
+	res[1] = 8;
+	res[2] = -1;
+	res[3] = 8;
+	res[4] = -1;
+	res[5] = 8;
 	i = 0;
 	while (i < 6){
 		if ((arr[i+1] - arr[i]) == (arr[i+2] - arr[i+1])){
@@ -74,7 +90,7 @@ int * find_sequences(int *arr, int len){
 		else if (arr[i+1] / arr[i] == arr[i+2] / arr[i]){
 			next = gpseq(arr, res, i);
 		}
-		i = next;
+		i +=1;
 	}
 	return res;
 }
