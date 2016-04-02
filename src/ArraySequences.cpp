@@ -82,7 +82,7 @@ int * find_sequences(int *arr, int len){
 	res[4] = -1;
 	res[5] = 8;
 	i = 0;
-	while (i < 6){
+	while (i < len){
 		if ((arr[i+1] - arr[i]) == (arr[i+2] - arr[i+1])){
 			next = apseq(arr, res, i, flag);
 			flag = 0;
