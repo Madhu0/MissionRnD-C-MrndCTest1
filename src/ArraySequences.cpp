@@ -31,7 +31,50 @@ Difficulty : Medium
 #include <stdio.h>
 #include <math.h>
 
+int apseq(int *arr, int *res, int strt,int flag){
+	int ap1mean,i;
+	ap1mean = arr[strt+1] - arr[strt];
+	if (flag)
+		res[0] = strt;
+	else
+		res[2] = strt;
+	i = strt;
+	while ((arr[i + 1] - arr[i]) == ap1mean){
+		i += 1;
+	}
+	if (flag)
+		res[1] = i;
+	else
+		res[3] = i;
+	return i;
+}
+
+int gpseq(int *arr, int *res, int strt){
+	int gpmean, i;
+	gpmean = arr[strt + 1] / arr[strt];
+	res[4] = strt;
+	i = strt;
+	while ((arr[i + 1] / arr[i])){
+		i += 1;
+	}
+	res[5] = i;
+	return i;
+}
+
 int * find_sequences(int *arr, int len){
 	//Return final array which has 6indexes [AP1_S,AP1_E,AP2_S,AP2_E,GP1_S,GP2_E]
-	return NULL;
+	int *res, i, j, next,flag=1;
+	res = (int *)malloc(sizeof(int)* 6);
+	i = 0;
+	while (i < 6){
+		if ((arr[i+1] - arr[i]) == (arr[i+2] - arr[i+1])){
+			next = apseq(arr, res, i, flag);
+			flag = 0;
+		}
+		else if (arr[i+1] / arr[i] == arr[i+2] / arr[i]){
+			next = gpseq(arr, res, i);
+		}
+		i = next;
+	}
+	return res;
 }
