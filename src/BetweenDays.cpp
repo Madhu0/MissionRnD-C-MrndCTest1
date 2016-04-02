@@ -28,7 +28,37 @@ struct node{
 	struct node *next;
 };
 
+int count_leap(int m, int y){
+	if (m <= 2)
+		y--;
+	return y / 4 - y / 100 + y / 400;
+}
 
 int between_days(struct node *date1head, struct node *date2head){
-	return -1;
+	if (date1head == NULL || date2head == NULL)
+		return -1;
+	struct node *temp1, *temp2;
+	int months[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	int dd1, dd2, mm1, mm2, yy1, yy2,i;
+	long int days1, days2;
+	temp1 = date1head;
+	temp2 = date2head;
+	dd1 = (temp1->data * 10) + (temp1->next->data * 1);
+	dd2 = (temp2->data * 10) + (temp2->next->data * 1);
+	mm1 = (temp1->next->next->data * 10) + (temp1->next->next->next->data * 1);
+	mm2 = (temp2->next->next->data * 10) + (temp2->next->next->next->data * 1);
+	yy1 = (temp1->next->next->next->next->data * 1000) + (temp1->next->next->next->next->next->data * 100) + (temp1->next->next->next->next->next->next->data * 10) + (temp1->next->next->next->next->next->next->next->data * 1);
+	yy2 = (temp2->next->next->next->next->data * 1000) + (temp2->next->next->next->next->next->data * 100) + (temp2->next->next->next->next->next->next->data * 10) + (temp2->next->next->next->next->next->next->next->data * 1);
+	days1 = yy1 * 365 + dd1;
+	days2 = yy2 * 365 + dd2;
+	for (i = 0; i < mm1; i++)
+		days1 += months[i];
+	for (i = 0; i < mm2; i++)
+		days2 += months[i];
+	days1 += count_leap(mm1, yy1);
+	days2 += count_leap(mm2, yy2);
+	if (days1>days2)
+		return days1 - days2 - 1;
+	else
+		return days2 - days1 - 1;
 }
